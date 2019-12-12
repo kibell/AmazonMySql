@@ -1,0 +1,22 @@
+{
+  "name": "amazonmysql",
+  "version": "1.0.0",
+  "description": "application that mimicss an amazon commerce site",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kibell/AmazonMySql.git"
+  },
+  "author": "Kitrick Bell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kibell/AmazonMySql/issues"
+  },
+  "homepage": "https://github.com/kibell/AmazonMySql#readme",
+  "dependencies": {
+    "mysql": "^2.17.1"
+  }
+}
