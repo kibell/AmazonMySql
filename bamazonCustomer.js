@@ -52,7 +52,7 @@ function showTable() {
             let quantity = results[i].stock_quantity + ''; // 
             // ----------------------------------------------
         
-            console.log(itemID + '|    ' + productName + '|' + departmentName + '|' + price + '|    ' + quantity);
+            console.log(itemID + '|    ' + productName + '|     ' + departmentName + '|      ' + price + '|    ' + quantity);
            
           }
           Start();
@@ -66,29 +66,28 @@ function showTable() {
 function Start(){
 
     inquirer
-      .prompt([
+      .prompt(
         {
-        name: "selectId",
+        name: "item_id",
         type: "input",
         message: "What is the ID of the product you want?",
         },
         
 
 
-    ])
+    )
 
     
-      .then(function(answer) {
-        connection.query(
-            "Select * from products Where item_id = 1 ", function(err,results) {
-                if (err) throw err;
-
-                console.log(results)
-            }
-        )
-
-
-       
-          connection.end();
+    .then(function(answer) {
+        // const query = "SELECT * FROM products WHERE item_id = ?";
+        console.log(answer.item_id)
+        connection.query("SELECT * FROM products WHERE ?", { item_id: answer.item_id }, function(err, item) {[]
+          
+              console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity}`);
+            });
+          
         })
-};
+    };
+      
+  
+  
