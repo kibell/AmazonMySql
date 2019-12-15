@@ -61,33 +61,132 @@ function showTable() {
 
 }
 
-
+let newQuantity ;
 
 function Start(){
+  
 
     inquirer
-      .prompt(
+      .prompt([
         {
         name: "item_id",
         type: "input",
         message: "What is the ID of the product you want?",
+        validate: function(num){
+            if (isNaN(num)===false){
+                return true;
+            }
+
         },
+        },
+       
         
 
 
-    )
+      ])
 
     
     .then(function(answer) {
         // const query = "SELECT * FROM products WHERE item_id = ?";
         console.log(answer.item_id)
-        connection.query("SELECT * FROM products WHERE ?", { item_id: answer.item_id }, function(err, item) {[]
+        connection.query("SELECT * FROM products WHERE ? ", { item_id: answer.item_id }, function(err, item) {[]
           
-              console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity}`);
+              console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity} `);
+              
+           newQuantity = `${item[0].stock_quantity}`
+           
+           
+
+           stockSelect();
+              
+              
+             
+        });
+
+
+
             });
           
-        })
-    };
+        };
+   
       
   
+ 
+function stockSelect(){
+console.log(newQuantity)
+    inquirer
+      .prompt([
+        {
+        name: "quantity",
+        type: "input",
+        message: "How many would you Like?",
+        validate: function(num){
+            if (isNaN(num)===false){
+                return true;
+            }
+
+        },
+        },
+       
+        
+
+
+      ])
+
+    
+    .then(function(answer) {
+        // const query = "SELECT * FROM products WHERE item_id = ?";
+       
+
+       let myQuant = answer.quantity
+        reduceQuantity = newQuantity - myQuant
+        console.log(reduceQuantity)
+        
+        connection.query("SELECT * FROM products WHERE ? ", { quantity: answer.quantity }, function(err, item) {[]
+          
+            
+              
+           
+              
+              
+              
+        });
+
+
+
+            });
+          
+        };
+
+    
+
+        
+        
+                     
+
+        
+
   
+
+
+
+//         })
+//         .then(function(answer) {
+//             console.log(answer.stock_quantity)
+//             connection.query("select stock_quantity from products", {stock_quantity: answer.stock_quantity}, function(err, stock){[]
+//                     console.log(`Stock: ${stock.stock_quantity}`)
+
+
+//             })
+
+//         }
+        
+        
+        
+//         )
+
+
+
+
+
+//   }
