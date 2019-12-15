@@ -62,6 +62,8 @@ function showTable() {
 }
 
 let newQuantity ;
+let reduceQuantity;
+let myItemNew ;
 
 function Start(){
   
@@ -88,14 +90,15 @@ function Start(){
     
     .then(function(answer) {
         // const query = "SELECT * FROM products WHERE item_id = ?";
-        console.log(answer.item_id)
+        
         connection.query("SELECT * FROM products WHERE ? ", { item_id: answer.item_id }, function(err, item) {[]
           
               console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity} `);
               
            newQuantity = `${item[0].stock_quantity}`
            
-           
+        
+           myItemNew = answer.item_id
 
            stockSelect();
               
@@ -141,22 +144,28 @@ console.log(newQuantity)
        let myQuant = answer.quantity
         reduceQuantity = newQuantity - myQuant
         console.log(reduceQuantity)
-        
-        connection.query("SELECT * FROM products WHERE ? ", { quantity: answer.quantity }, function(err, item) {[]
+        console.log(myItemNew)
+         connection.query("UPDATE products SET ? WHERE ? ", [{ stock_quantity: reduceQuantity}, {item_id: myItemNew }], function(err, item) {[]
           
-            
-              
+          
+            if(err) throw err
            
-              
-              
-              
-        });
-
-
-
-            });
+            connection.query("SELECT * FROM products WHERE ? ", { item_id: answer.item_id }, function(err, item) {[]
           
-        };
+                console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity} `);
+                
+           
+                
+                
+               
+          });
+     
+              
+              
+         });
+        
+    });
+};
 
     
 
