@@ -49,19 +49,22 @@ function showTable() {
             let price = '$' + results[i].price + ''; 
             
         
-            let quantity = results[i].stock_quantity + ''; // 
+            let quantity = results[i].stock_quantity + '';
+            
+            let productSales = '$' + results[i].product_sales + '';                                                
+            // 
             // ----------------------------------------------
         
             // console.log(itemID + '|    ' + productName + '|     ' + departmentName + '|      ' + price + '|    ' + quantity);
 
            let  table = new Table({
-                head: ['  Item_ID', 'Product Name',  'Department Name',  'Price', 'In Stock']
+                head: ['  Item_ID', 'Product Name',  'Department Name',  'Price', 'In Stock','Product Sales']
               
             });
              
             // table is an Array, so you can `push`, `unshift`, `splice` and friends
             table.push(
-                [itemID, productName, departmentName, price, quantity]
+                [itemID, productName, departmentName, price, quantity, productSales]
             
             );
            
@@ -197,14 +200,30 @@ function stockSelect(){
 
                 let price = `${item[0].price}` *  myQuant
                 let totalPurchase = price
-
+                let totalSales = parseInt(`${item[0].product_sales}`) + parseInt(price)
                 console.log("You have Purchased the " + `${item[0].product_name}` + " The total cost of your purchase is $" + totalPurchase)
-                askAgain()
+               
+                connection.query("UPDATE products SET ? WHERE ?  ", [{product_sales: totalSales },{item_id: myItemNew}], function(err, item) {[]
+
+                    if(err) throw err
+    
+                    console.log("Your product sales have been updated")
+                    
+                  
+                    askAgain() 
+                       
+                      
+                 });
+                
               
                    
                    
                   
              });
+
+            
+
+
           
          
            
