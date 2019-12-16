@@ -119,7 +119,9 @@ function viewProducts(){
             );
            
             console.log(table.toString())
-          }
+           
+          } 
+          finish()
          
 
     });
@@ -164,7 +166,8 @@ function lowInventory(){
             );
            
             console.log(table.toString())
-          }
+           
+          } finish()
          
 
     });
@@ -249,7 +252,7 @@ inquirer
     connection.query("Update products Set ?  WHERE ? ", [{ stock_quantity: newInvo},{item_id: newitem_id }], function(err, item) {[]
         if(err) throw err;
      console.log( "You have sucessfully added "+ response.stock_quantity +" item(s) to the inventory")
-
+     finish()
      }) 
   
   
@@ -308,7 +311,7 @@ function addProduct(){
         connection.query("insert into products SET ?,?,?,?", [{ product_name: response.product_name},{ department_name: response.department_name}, { price: response.price},{ stock_quantity: response.stock_quantity}], function(err, item) {[]
             if(err) throw err;
          console.log( "You have sucessfully added "+ response.product_name +" to the Inventory")
-    
+    finish()
          }) 
       
       
@@ -319,3 +322,41 @@ function addProduct(){
     
     }
     
+
+    function finish(){
+
+        inquirer
+        .prompt([
+          {
+          name: "confirm",
+          type: "confirm",
+          message: "Are you finished?",
+        
+        
+          },
+          
+           
+          
+         
+          
+        
+        
+        ])
+        .then(function(response) {
+            
+          if (response.confirm === false){
+
+              Start();
+
+          } else {
+
+            console.log("Thank you for using the Bamazon Management Tool, Logging out")
+          process.exit()
+          
+          }
+         
+        });
+        
+        
+        
+        }
