@@ -179,8 +179,8 @@ function stockSelect(){
             if(err) throw err
 
             if (item[0].stock_quantity < myQuant){
-                console.log("Sorry there is not enough items in stock, Try another selection")
-                showTable();
+                console.log("Sorry there are only " + item[0].stock_quantity + " left, please enter a different amount")
+                stockSelect();
             } else {
 
 
