@@ -17,7 +17,7 @@
 
 ## Animated Gifs/Pictures of App
 
-- Customer View
+## Customer View
 
 
 ![](bamazin.gif)
