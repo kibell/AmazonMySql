@@ -30,6 +30,7 @@ The app will use node.js and MySql to take in orders from customers and deplete 
 ## Manager View
 
 -Displaying the Products in the database
+
 ![](productDisplay.gif)
 
 
