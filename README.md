@@ -26,6 +26,18 @@
 
 ![](insuff.gif)
 
+
+## Manager View
+
+![](productDisplay.gif)
+
+![](lowIven.gif)
+
+
+![](addstock.gif)
+
+![](newpro.gif)
+
 ## Tech Stack
 
 - HTML5,CSS,JS
