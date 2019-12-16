@@ -62,7 +62,7 @@ lowInventory();
 break;
 
 case  "Add to Inventory": 
-console.log("adde")
+addInventory();
 break;
 
 case "Add new Product": 
@@ -169,4 +169,94 @@ function lowInventory(){
 
     });
 
+}
+
+
+let newitem_id;
+function addInventory(){
+ 
+
+    inquirer
+      .prompt([
+        {
+        name: "item_id",
+        type: "input",
+        message: "What is the ID of the product you want to add inventory?",
+        validate: function(num){
+            if (isNaN(num)===false){
+                return true;
+            }
+
+        },
+        },
+       
+        
+
+
+      ])
+
+    
+    .then(function(answer) {
+        // const query = "SELECT * FROM products WHERE item_id = ?";
+        
+        connection.query("SELECT * FROM products WHERE ? ", { item_id: answer.item_id }, function(err, item) {[]
+            let  table = new Table({
+                head: ['Product Name',  'Department Name',  'Price', 'In Stock']
+              
+            });
+             
+            // table is an Array, so you can `push`, `unshift`, `splice` and friends
+            table.push(
+                [`${item[0].product_name}` , `${item[0].department_name}` , `${item[0].price}`, `${item[0].stock_quantity} `]
+            
+            );
+           newitem_id = `${item[0].item_id}`
+            console.log(table.toString())
+          addStock();
+          
+             
+           
+          
+        });
+    });
+}
+
+
+function addStock(){
+
+inquirer
+.prompt([
+  {
+  name: "stock_quantity",
+  type: "input",
+  message: "How many are you adding?",
+  validate: function(num){
+      if (isNaN(num)===false){
+          return true;
+      }
+
+  },
+  },
+ 
+  
+
+
+])
+.then(function(response) {
+    connection.query("SELECT * FROM products WHERE ? ", { item_id: newitem_id }, function(err, item){
+        
+    let newInvo = parseInt(item[0].stock_quantity) + parseInt(response.stock_quantity)
+    connection.query("Update products Set ?  WHERE ? ", [{ stock_quantity: newInvo},{item_id: newitem_id }], function(err, item) {[]
+        if(err) throw err;
+     console.log( "You have sucessfully added "+ response.stock_quantity +" item(s) to the inventory")
+
+     }) 
+  
+  
+ 
+});
+
+
+
+});
 }
