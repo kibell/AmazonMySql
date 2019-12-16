@@ -66,7 +66,7 @@ addInventory();
 break;
 
 case "Add new Product": 
-console.log("new")
+addProduct();
 break;
 
         }
@@ -260,3 +260,62 @@ inquirer
 
 });
 }
+
+
+
+function addProduct(){
+
+    inquirer
+    .prompt([
+      {
+      name: "product_name",
+      type: "input",
+      message: "What item do you want to add?",
+    
+    
+      },
+      {
+        name: "department_name",
+        type: "input",
+        message: "Department?",
+      
+      
+        },
+
+        {
+            name: "price",
+            type: "input",
+            message: "Price?",
+          
+          
+            },
+    
+            {
+                name: "stock_quantity",
+                type: "input",
+                message: "Quantity?",
+              
+              
+                },
+      
+     
+      
+    
+    
+    ])
+    .then(function(response) {
+        
+        connection.query("insert into products SET ?,?,?,?", [{ product_name: response.product_name},{ department_name: response.department_name}, { price: response.price},{ stock_quantity: response.stock_quantity}], function(err, item) {[]
+            if(err) throw err;
+         console.log( "You have sucessfully added "+ response.product_name +" to the Inventory")
+    
+         }) 
+      
+      
+     
+    });
+    
+    
+    
+    }
+    
