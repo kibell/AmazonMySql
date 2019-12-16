@@ -18,7 +18,7 @@
 ## Animated Gifs/Pictures of App
 
 - Customer View
-![](bamazin.gif)
+![](assets\bamazin.gif)
 
 ## Tech Stack
 
