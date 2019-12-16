@@ -198,7 +198,7 @@ function stockSelect(){
                 let price = `${item[0].price}` *  myQuant
                 let totalPurchase = price
 
-                console.log("You have Purchased the " + `${item[0].product_name}` + "   The total cost of your purchase is $" + totalPurchase)
+                console.log("You have Purchased the " + `${item[0].product_name}` + " The total cost of your purchase is $" + totalPurchase)
                 askAgain()
               
                    
