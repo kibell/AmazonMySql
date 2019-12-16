@@ -77,6 +77,7 @@ let newQuantity ;
 let reduceQuantity;
 let myItemNew ;
 let price;
+let totalPurchase;
 
 function Start(){
   
@@ -105,8 +106,21 @@ function Start(){
         // const query = "SELECT * FROM products WHERE item_id = ?";
         
         connection.query("SELECT * FROM products WHERE ? ", { item_id: answer.item_id }, function(err, item) {[]
+            let  table = new Table({
+                head: ['Product Name',  'Department Name',  'Price', 'In Stock']
+              
+            });
+             
+            // table is an Array, so you can `push`, `unshift`, `splice` and friends
+            table.push(
+                [`${item[0].product_name}` , `${item[0].department_name}` , `${item[0].price}`, `${item[0].stock_quantity} `]
+            
+            );
+           
+            console.log(table.toString())
           
-              console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity} `);
+          
+             
               
            newQuantity = `${item[0].stock_quantity}`
            price = `${item[0].price}`
@@ -129,7 +143,7 @@ function Start(){
   
  
 function stockSelect(){
-console.log(newQuantity)
+
     inquirer
       .prompt([
         {
@@ -156,8 +170,8 @@ console.log(newQuantity)
 
        let myQuant = answer.quantity
         reduceQuantity = newQuantity - myQuant
-        console.log(reduceQuantity)
-        console.log(myItemNew)
+        // console.log(reduceQuantity)
+        // console.log(myItemNew)
 
         connection.query("Select * from products Where ? ", [{item_id: myItemNew }], function(err, item) {[]
           
@@ -176,7 +190,16 @@ console.log(newQuantity)
              
                if(err) throw err
              
-               askAgain();
+               
+            connection.query("Select * from products Where ? ", [{item_id: myItemNew }], function(err, item) {[]
+
+                if(err) throw err
+
+                let price = `${item[0].price}` *  myQuant
+                let totalPurchase = price
+
+                console.log("You have Purchased the " + `${item[0].product_name}` + "   The total cost of your purchase is $" + totalPurchase)
+                askAgain()
               
                    
                    
@@ -188,9 +211,10 @@ console.log(newQuantity)
                 
                 
                
-          };
-        })
+          })
+        }
     })
+    });
 };
      
               
@@ -227,6 +251,8 @@ console.log(newQuantity)
               
         
                 console.log("Thank you for shopping, Hope we see you again")
+               
+
                 process.exit();
                 }
 
