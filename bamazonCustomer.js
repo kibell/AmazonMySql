@@ -1,6 +1,6 @@
 const mysql = require("mysql")
 const inquirer = require("inquirer")
-
+const Table = require('cli-table');
 const connection = mysql.createConnection({
     host: "localhost",
 
@@ -31,9 +31,9 @@ showTable()
 function showTable() {
     connection.query("select * from products", function(err, results) {
         if (err) throw err;
-        console.log("Welcome Select the ID of the item you would like!")
-        console.log('  Item_ID  |      Product Name      |  Department Name  |   Price  | In Stock');
-        console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
+        console.log("Welcome to Bamazon!! Select the ID of the item you would like!")
+        // console.log('  Item_ID  |      Product Name      |  Department Name  |   Price  | In Stock');
+        // console.log('- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ')
 
         for(let i = 0; i < results.length; i++){
 
@@ -52,8 +52,20 @@ function showTable() {
             let quantity = results[i].stock_quantity + ''; // 
             // ----------------------------------------------
         
-            console.log(itemID + '|    ' + productName + '|     ' + departmentName + '|      ' + price + '|    ' + quantity);
+            // console.log(itemID + '|    ' + productName + '|     ' + departmentName + '|      ' + price + '|    ' + quantity);
+
+           let  table = new Table({
+                head: ['  Item_ID', 'Product Name',  'Department Name',  'Price', 'In Stock']
+              
+            });
+             
+            // table is an Array, so you can `push`, `unshift`, `splice` and friends
+            table.push(
+                [itemID, productName, departmentName, price, quantity]
+            
+            );
            
+            console.log(table.toString())
           }
           Start();
 
@@ -64,6 +76,7 @@ function showTable() {
 let newQuantity ;
 let reduceQuantity;
 let myItemNew ;
+let price;
 
 function Start(){
   
@@ -96,7 +109,7 @@ function Start(){
               console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity} `);
               
            newQuantity = `${item[0].stock_quantity}`
-           
+           price = `${item[0].price}`
         
            myItemNew = answer.item_id
 
@@ -139,33 +152,90 @@ console.log(newQuantity)
     
     .then(function(answer) {
         // const query = "SELECT * FROM products WHERE item_id = ?";
-       
+        
 
        let myQuant = answer.quantity
         reduceQuantity = newQuantity - myQuant
         console.log(reduceQuantity)
         console.log(myItemNew)
-         connection.query("UPDATE products SET ? WHERE ? ", [{ stock_quantity: reduceQuantity}, {item_id: myItemNew }], function(err, item) {[]
+
+        connection.query("Select * from products Where ? ", [{item_id: myItemNew }], function(err, item) {[]
           
           
             if(err) throw err
-           
-            connection.query("SELECT * FROM products WHERE ? ", { item_id: answer.item_id }, function(err, item) {[]
+
+            if (item[0].stock_quantity < myQuant){
+                console.log("Sorry there is not enough items in stock, Try another selection")
+                showTable();
+            } else {
+
+
+
+            connection.query("UPDATE products SET ? WHERE ? ", [{ stock_quantity: reduceQuantity}, {item_id: myItemNew }], function(err, item) {[]
+             
+             
+               if(err) throw err
+             
+               askAgain();
+              
+                   
+                   
+                  
+             });
           
-                console.log(`Product: ${item[0].product_name} || Department: ${item[0].department_name} || PRICE: ${item[0].price} ||STOCK:  ${item[0].stock_quantity} `);
-                
+         
            
                 
                 
                
-          });
+          };
+        })
+    })
+};
      
               
               
-         });
+         
+
+
+     
+              
+              
         
-    });
-};
+    
+        
+    
+
+
+    function askAgain (){
+
+
+        inquirer.prompt({
+                type: "confirm",
+                name:"ask",
+                message: "Would you like to purchase another item?"
+                
+
+        }).then(function(response){
+                
+            
+
+         if(response.ask === true){
+
+                    showTable();
+                } else {
+              
+        
+                console.log("Thank you for shopping, Hope we see you again")
+                process.exit();
+                }
+
+        });
+
+
+
+    }
+
 
     
 
